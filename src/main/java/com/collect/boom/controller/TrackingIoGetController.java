@@ -1,10 +1,7 @@
 package com.collect.boom.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -21,8 +18,23 @@ public class TrackingIoGetController {
      */
     @RequestMapping(value = "/active", method = RequestMethod.GET)
     public String collectActiveData(@RequestParam(name = "name") String name) {
-        System.out.println(name);
-        return JSONObject.toJSONString(new HashMap<String, Integer>().put("code", 200));
-    }
+        JSONObject obj =new JSONObject();
+        obj.put("code",200);
 
+        System.out.println(name);
+        return obj.toJSONString();
+    }
+    /**
+     * 激活数据同步
+     *
+     * @return
+     */
+    @RequestMapping(value = "/active2", method = RequestMethod.GET)
+    public String collectActive3Data(@RequestBody String message) {
+        JSONObject obj =new JSONObject();
+        obj.put("code",200);
+
+        System.out.println(message);
+        return obj.toJSONString();
+    }
 }

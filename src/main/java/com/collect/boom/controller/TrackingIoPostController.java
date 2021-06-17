@@ -1,9 +1,10 @@
 package com.collect.boom.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 热云数据同步
@@ -16,10 +17,13 @@ public class TrackingIoPostController {
      *
      * @return
      */
-    @RequestMapping(value = "/active2", method = RequestMethod.POST)
+    @RequestMapping(value = "/active3", method = RequestMethod.POST)
     public String collectActiveData(@RequestBody String message) {
+        JSONObject obj = new JSONObject();
+        obj.put("code", 200);
+
         System.out.println(message);
-        return JSONObject.toJSONString(new HashMap<String, Integer>().put("code", 200));
+        return obj.toJSONString();
     }
 
 }
