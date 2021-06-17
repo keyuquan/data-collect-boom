@@ -1,6 +1,7 @@
 package com.collect.boom.uitls;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -131,6 +132,59 @@ public class HttpUtils {
         return null;
     }
 
+    /**
+     * 发送 get 请求: 参数形式: url/{id}
+     *
+     * @param url 请求路径
+     * @param map 请求参数
+     */
+    public static String doGetBody(String url, Map<String, Object> map, String accessToken) {
+        // 构造请求
+        HttpEntityEnclosingRequestBase httpEntity = new HttpEntityEnclosingRequestBase() {
+            @Override
+            public String getMethod() {
+                return "GET";
+            }
+        };
+        if (StringUtils.isNotEmpty(accessToken)) {
+            httpEntity.setHeader("Access-Token", accessToken);
+        }
+        CloseableHttpResponse response = null;
+        CloseableHttpClient client = null;
+        try {
+            client = HttpClientBuilder.create().build();
+
+            httpEntity.setURI(URI.create(url));
+            httpEntity.setEntity(new StringEntity(JSONObject.toJSONString(map), ContentType.APPLICATION_JSON));
+            response = client.execute(httpEntity);
+            if (response != null) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer result = new StringBuffer();
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line);
+                }
+                bufferedReader.close();
+                return result.toString();
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+                if (client != null) {
+                    client.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
     public static void main(String[] args) {
         Map<String, String> map = new HashMap<>();
         map.put("name", "haha");
