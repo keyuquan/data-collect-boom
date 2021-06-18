@@ -30,33 +30,33 @@ public class TrackingIoController {
     @RequestMapping(value = "/active", method = RequestMethod.GET)
     public String collectActiveData(
             @RequestParam(name = "appkey") String appkey,
-            @RequestParam(name = "deviceid") String deviceid,
-            @RequestParam(name = "spreadurl") String spreadurl,
-            @RequestParam(name = "spreadname") String spreadname,
-            @RequestParam(name = "channel") String channel,
-            @RequestParam(name = "accountid") String accountid,
-            @RequestParam(name = "ry_adgroup_id") String ry_adgroup_id,
-            @RequestParam(name = "ry_adgroup_name") String ry_adgroup_name,
-            @RequestParam(name = "ry_adplan_id") String ry_adplan_id,
-            @RequestParam(name = "ry_adplan_name") String ry_adplan_name,
-            @RequestParam(name = "ry_adcreative_id") String ry_adcreative_id,
-            @RequestParam(name = "ry_adcreative_name") String ry_adcreative_name,
-            @RequestParam(name = "activetime") String activetimep,
-            @RequestParam(name = "clicktime") String clicktimep,
-            @RequestParam(name = "uip") String uip,
-            @RequestParam(name = "osversion") String osversion,
-            @RequestParam(name = "ryos") String ryos,
-            @RequestParam(name = "devicetype") String devicetype,
-            @RequestParam(name = "idfa") String idfa,
-            @RequestParam(name = "imei") String imei,
-            @RequestParam(name = "oaid") String oaid,
-            @RequestParam(name = "androidid") String androidid,
-            @RequestParam(name = "aip") String aip,
-            @RequestParam(name = "skey") String skey) {
+            @RequestParam(name = "deviceid",required = false) String deviceid,
+            @RequestParam(name = "spreadurl",required = false) String spreadurl,
+            @RequestParam(name = "spreadname",required = false) String spreadname,
+            @RequestParam(name = "channel",required = false) String channel,
+            @RequestParam(name = "accountid",required = false) String accountid,
+            @RequestParam(name = "ry_adgroup_id",required = false) String ry_adgroup_id,
+            @RequestParam(name = "ry_adgroup_name",required = false) String ry_adgroup_name,
+            @RequestParam(name = "ry_adplan_id",required = false) String ry_adplan_id,
+            @RequestParam(name = "ry_adplan_name",required = false) String ry_adplan_name,
+            @RequestParam(name = "ry_adcreative_id",required = false) String ry_adcreative_id,
+            @RequestParam(name = "ry_adcreative_name",required = false) String ry_adcreative_name,
+            @RequestParam(name = "activetime",required = false) String activetimep,
+            @RequestParam(name = "clicktime",required = false) String clicktimep,
+            @RequestParam(name = "uip",required = false) String uip,
+            @RequestParam(name = "osversion",required = false) String osversion,
+            @RequestParam(name = "ryos",required = false) String ryos,
+            @RequestParam(name = "devicetype",required = false) String devicetype,
+            @RequestParam(name = "idfa",required = false) String idfa,
+            @RequestParam(name = "imei",required = false) String imei,
+            @RequestParam(name = "oaid",required = false) String oaid,
+            @RequestParam(name = "androidid",required = false) String androidid,
+            @RequestParam(name = "aip",required = false) String aip,
+            @RequestParam(name = "skey",required = false) String skey) {
 
-        Long activetime = activetimep == null ? 0l : Long.valueOf(activetimep);
-        Long clicktime = clicktimep == null ? 0l : Long.valueOf(clicktimep);
-        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime);
+        Long activetime = (activetimep == null ? 0l : Long.valueOf(activetimep));
+        Long clicktime = (clicktimep == null ? 0l : Long.valueOf(clicktimep));
+        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime * 1000);
         if (StringUtils.isNotEmpty(appkey) && DateUtils.compareDate(activeTime, DateUtils.addDay(DateUtils.getSysDate(), 28)) <= 0) {
             // 超过28天以后的数据不要
             Map<String, Object> map = new HashMap<>();
