@@ -1,7 +1,6 @@
 package com.collect.boom.uitls;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -180,9 +179,33 @@ public class HttpUtils {
 
     public static void main(String[] args) {
         Map<String, Object> map = new HashMap<>();
-        map.put("name", "haha");
+        map.put("appkey", "appkey");
+        map.put("deviceid", "deviceid");
+        map.put("spreadurl", "spreadurl");
+        map.put("spreadname", "spreadname");
+        map.put("channel", "channel");
+        map.put("accountid", "accountid");
+        map.put("ry_adgroup_id", "ry_adgroup_id");
+        map.put("ry_adgroup_name", "ry_adgroup_name");
+        map.put("ry_adplan_id", "ry_adplan_id");
+        map.put("ry_adplan_name", "ry_adplan_name");
+        map.put("ry_adcreative_id"," ry_adcreative_id");
+        map.put("ry_adcreative_name", "ry_adcreative_name");
+        map.put("activetime", "activetime");
+        map.put("clicktime", "clicktime");
+        map.put("uip", "uip");
+        map.put("osversion", "osversion");
+        map.put("ryos", "ryos");
+        map.put("devicetype", "devicetype");
+        map.put("idfa", "idfa");
+        map.put("imei", "imei");
+        map.put("oaid", "oaid");
+        map.put("androidid", "androidid");
+        map.put("aip", "aip");
+        map.put("skey", "skey");
+        System.out.println(JSONObject.toJSONString(map));
         System.out.println(doGet("http://127.0.0.1:8080/tracking/active", map));
-        //System.out.println(doBodyGet("http://127.0.0.1:8080/tracking/active2", map));
+        // System.out.println(doBodyGet("http://127.0.0.1:8080/tracking/active2", map));
         // System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
 
     }
