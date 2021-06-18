@@ -1,6 +1,7 @@
 package com.collect.boom.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.collect.boom.uitls.DateUtils;
 import com.collect.boom.uitls.HttpUtils;
 import com.collect.boom.uitls.KafkaUtils;
 import org.springframework.web.bind.annotation.*;
@@ -52,42 +53,47 @@ public class TrackingIoController {
             @RequestParam(name = "aip") String aip,
             @RequestParam(name = "skey") String skey) {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("active_time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime*1000));
-        map.put("appkey", appkey);
-        map.put("deviceid", deviceid);
-        map.put("spreadurl", spreadurl);
-        map.put("spreadname", spreadname);
-        map.put("channel", channel);
-        map.put("accountid", accountid);
-        map.put("ry_adgroup_id", ry_adgroup_id);
-        map.put("ry_adgroup_name", ry_adgroup_name);
-        map.put("ry_adplan_id", ry_adplan_id);
-        map.put("ry_adplan_name", ry_adplan_name);
-        map.put("ry_adcreative_id", ry_adcreative_id);
-        map.put("ry_adcreative_name", ry_adcreative_name);
-        map.put("activetime", activetime);
-        map.put("clicktime", clicktime);
-        map.put("uip", uip);
-        map.put("osversion", osversion);
-        map.put("ryos", ryos);
-        map.put("devicetype", devicetype);
-        map.put("idfa", idfa);
-        map.put("imei", imei);
-        map.put("oaid", oaid);
-        map.put("androidid", androidid);
-        map.put("aip", aip);
-        map.put("skey", skey);
+        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime * 1000);
+        if (DateUtils.compareDate(activeTime, DateUtils.addDay(DateUtils.getSysDate(), 28)) <= 0) {
+            // 超过28天以后的数据不要
+            Map<String, Object> map = new HashMap<>();
+            map.put("active_time", activeTime);
+            map.put("appkey", appkey);
+            map.put("deviceid", deviceid);
+            map.put("spreadurl", spreadurl);
+            map.put("spreadname", spreadname);
+            map.put("channel", channel);
+            map.put("accountid", accountid);
+            map.put("ry_adgroup_id", ry_adgroup_id);
+            map.put("ry_adgroup_name", ry_adgroup_name);
+            map.put("ry_adplan_id", ry_adplan_id);
+            map.put("ry_adplan_name", ry_adplan_name);
+            map.put("ry_adcreative_id", ry_adcreative_id);
+            map.put("ry_adcreative_name", ry_adcreative_name);
+            map.put("activetime", activetime);
+            map.put("clicktime", clicktime);
+            map.put("uip", uip);
+            map.put("osversion", osversion);
+            map.put("ryos", ryos);
+            map.put("devicetype", devicetype);
+            map.put("idfa", idfa);
+            map.put("imei", imei);
+            map.put("oaid", oaid);
+            map.put("androidid", androidid);
+            map.put("aip", aip);
+            map.put("skey", skey);
 
-        pool.execute(new Runnable() {
-            @Override
-            public void run() {
-                // 把数据发送到 kafka
-                KafkaUtils.sendDataToKafka("boom_trackingio_active", JSONObject.toJSONString(map));
-                // 数据发送到 fineboost
-                HttpUtils.doGet("https://callback.fineboost.cn/tracking/act", map);
-            }
-        });
+            pool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // 把数据发送到 kafka
+                    KafkaUtils.sendDataToKafka("boom_trackingio_active", JSONObject.toJSONString(map));
+                    // 数据发送到 fineboost
+                    HttpUtils.doGet("https://callback.fineboost.cn/tracking/act", map);
+                }
+            });
+        }
+
         JSONObject obj = new JSONObject();
         obj.put("code", 200);
         return obj.toJSONString();
