@@ -1,9 +1,11 @@
 package com.collect.boom.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.collect.boom.uitls.HttpUtils;
 import com.collect.boom.uitls.KafkaUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +53,7 @@ public class TrackingIoController {
             @RequestParam(name = "skey") String skey) {
 
         Map<String, Object> map = new HashMap<>();
+        map.put("active_time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime*1000));
         map.put("appkey", appkey);
         map.put("deviceid", deviceid);
         map.put("spreadurl", spreadurl);
@@ -79,8 +82,10 @@ public class TrackingIoController {
         pool.execute(new Runnable() {
             @Override
             public void run() {
-                // 把数据发送到kafka
-                KafkaUtils.sendDataToKafka("", new JSONObject(map).toJSONString());
+                // 把数据发送到 kafka
+                KafkaUtils.sendDataToKafka("boom_trackingio_active", JSONObject.toJSONString(map));
+                // 数据发送到 fineboost
+                HttpUtils.doGet("https://callback.fineboost.cn/tracking/act", map);
             }
         });
         JSONObject obj = new JSONObject();

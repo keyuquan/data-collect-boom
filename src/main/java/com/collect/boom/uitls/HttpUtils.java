@@ -45,7 +45,9 @@ public class HttpUtils {
             for (String key : map.keySet()) {
                 uriBuilder.setParameter(key, new JSONObject(map).getString(key));
             }
+            System.out.println(uriBuilder);
             httpEntity.setURI(uriBuilder.build());
+
             response = client.execute(httpEntity);
             if (response != null) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -189,10 +191,10 @@ public class HttpUtils {
         map.put("ry_adgroup_name", "ry_adgroup_name");
         map.put("ry_adplan_id", "ry_adplan_id");
         map.put("ry_adplan_name", "ry_adplan_name");
-        map.put("ry_adcreative_id"," ry_adcreative_id");
+        map.put("ry_adcreative_id", " ry_adcreative_id");
         map.put("ry_adcreative_name", "ry_adcreative_name");
-        map.put("activetime", "activetime");
-        map.put("clicktime", "clicktime");
+        map.put("activetime", 1624010283l);
+        map.put("clicktime", 1624010283l);
         map.put("uip", "uip");
         map.put("osversion", "osversion");
         map.put("ryos", "ryos");
@@ -204,8 +206,8 @@ public class HttpUtils {
         map.put("aip", "aip");
         map.put("skey", "skey");
         System.out.println(JSONObject.toJSONString(map));
-        System.out.println(doGet("http://127.0.0.1:8080/tracking/active", map));
-        // System.out.println(doBodyGet("http://127.0.0.1:8080/tracking/active2", map));
+        System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
+//        System.out.println(doBodyGet("http://112.74.168.42:8099/tracking/active", map));
         // System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
 
     }
