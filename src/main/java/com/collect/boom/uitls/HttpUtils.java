@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -205,8 +206,10 @@ public class HttpUtils {
         map.put("androidid", "androidid");
         map.put("aip", "aip");
         map.put("skey", "skey");
-        System.out.println(JSONObject.toJSONString(map));
-        System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
+
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(0l));
+//        System.out.println(JSONObject.toJSONString(map));
+//        System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
 //        System.out.println(doBodyGet("http://112.74.168.42:8099/tracking/active", map));
         // System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
 

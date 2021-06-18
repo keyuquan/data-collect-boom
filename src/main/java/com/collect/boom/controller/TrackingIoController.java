@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.collect.boom.uitls.DateUtils;
 import com.collect.boom.uitls.HttpUtils;
 import com.collect.boom.uitls.KafkaUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -40,8 +41,8 @@ public class TrackingIoController {
             @RequestParam(name = "ry_adplan_name") String ry_adplan_name,
             @RequestParam(name = "ry_adcreative_id") String ry_adcreative_id,
             @RequestParam(name = "ry_adcreative_name") String ry_adcreative_name,
-            @RequestParam(name = "activetime") Long activetime,
-            @RequestParam(name = "clicktime") Long clicktime,
+            @RequestParam(name = "activetime") String activetimep,
+            @RequestParam(name = "clicktime") String clicktimep,
             @RequestParam(name = "uip") String uip,
             @RequestParam(name = "osversion") String osversion,
             @RequestParam(name = "ryos") String ryos,
@@ -53,8 +54,10 @@ public class TrackingIoController {
             @RequestParam(name = "aip") String aip,
             @RequestParam(name = "skey") String skey) {
 
-        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime * 1000);
-        if (DateUtils.compareDate(activeTime, DateUtils.addDay(DateUtils.getSysDate(), 28)) <= 0) {
+        Long activetime = activetimep == null ? 0l : Long.valueOf(activetimep);
+        Long clicktime = clicktimep == null ? 0l : Long.valueOf(clicktimep);
+        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime);
+        if (StringUtils.isNotEmpty(appkey) && DateUtils.compareDate(activeTime, DateUtils.addDay(DateUtils.getSysDate(), 28)) <= 0) {
             // 超过28天以后的数据不要
             Map<String, Object> map = new HashMap<>();
             map.put("active_time", activeTime);
