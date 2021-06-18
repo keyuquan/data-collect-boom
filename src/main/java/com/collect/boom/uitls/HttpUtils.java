@@ -46,7 +46,6 @@ public class HttpUtils {
             for (String key : map.keySet()) {
                 uriBuilder.setParameter(key, new JSONObject(map).getString(key));
             }
-            System.out.println(uriBuilder);
             httpEntity.setURI(uriBuilder.build());
 
             response = client.execute(httpEntity);
