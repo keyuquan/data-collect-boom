@@ -7,6 +7,8 @@ import com.collect.boom.uitls.KafkaUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +72,6 @@ public class TrackingIoController {
             map.put("ry_adgroup_id", ry_adgroup_id);
             map.put("ry_adgroup_name", ry_adgroup_name);
             map.put("ry_adplan_id", ry_adplan_id);
-            map.put("ry_adplan_name", ry_adplan_name);
             map.put("ry_adcreative_id", ry_adcreative_id);
             map.put("ry_adcreative_name", ry_adcreative_name);
             map.put("activetime", activetime);
@@ -85,7 +86,14 @@ public class TrackingIoController {
             map.put("androidid", androidid);
             map.put("aip", aip);
             map.put("skey", skey);
-
+            try {
+                // 这些字段需要解码
+                map.put("ry_adgroup_name", URLDecoder.decode(ry_adgroup_name, "UTF-8"));
+                map.put("ry_adplan_name", URLDecoder.decode(ry_adplan_name, "UTF-8"));
+                map.put("ry_adcreative_name", URLDecoder.decode(ry_adcreative_name, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             pool.execute(new Runnable() {
                 @Override
                 public void run() {
