@@ -56,7 +56,7 @@ public class TrackingIoController {
 
         Long activetime = (StringUtils.isEmpty(activetimep) ? 0l : Long.valueOf(activetimep));
         Long clicktime = (StringUtils.isEmpty(clicktimep) ? 0l : Long.valueOf(clicktimep));
-        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime * 1000);
+        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime);
         if (StringUtils.isNotEmpty(appkey) && DateUtils.compareDate(activeTime, DateUtils.addDay(DateUtils.getSysDate(), 28)) <= 0) {
             // 超过28天以后的数据不要
             Map<String, Object> map = new HashMap<>();

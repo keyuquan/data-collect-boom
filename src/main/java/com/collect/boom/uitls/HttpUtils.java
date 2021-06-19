@@ -206,13 +206,13 @@ public class HttpUtils {
         map.put("androidid", "androidid");
         map.put("aip", "aip");
         map.put("skey", "skey");
-       String  activetimep=null ;
+        String activetimep = null;
         Long activetime = activetimep == null ? 0l : Long.valueOf(activetimep);
 
-
+        System.out.println("DE7BF6BA96B24E7ABF85602831529D3A7D264DE82259979BC123AB60A702B22C".length());
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(0l));
 //        System.out.println(JSONObject.toJSONString(map));
-        System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
+//        System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
 //        System.out.println(doBodyGet("http://112.74.168.42:8099/tracking/active", map));
         // System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
 
