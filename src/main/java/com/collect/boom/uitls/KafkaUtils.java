@@ -17,7 +17,7 @@ public class KafkaUtils {
             synchronized (KafkaProducer.class) {
                 if (null == instance) {
                     Properties props = new Properties();
-                    props.put("bootstrap.servers", "172.16.0.157:9092,172.16.0.158:9092,172.16.0.159:9092");
+                    props.put("bootstrap.servers", "ta1:9092,ta2:9092,ta3:9092");
                     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
                     props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
                     instance = new KafkaProducer<>(props);
