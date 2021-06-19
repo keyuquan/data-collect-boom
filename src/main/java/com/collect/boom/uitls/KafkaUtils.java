@@ -21,7 +21,7 @@ public class KafkaUtils {
                     props.put("group.id", "data_collect_boom");
                     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
                     props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-                    instance = new KafkaProducer<String, String>(props);
+                    instance = new KafkaProducer<>(props);
                 }
 
             }
@@ -42,7 +42,7 @@ public class KafkaUtils {
 
     }
 
-    public static void close(String topic, String str) {
+    public static void close() {
         if (instance != null) {
             instance.close();
         }

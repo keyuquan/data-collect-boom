@@ -1,6 +1,7 @@
 package com.collect.boom.uitls;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -205,6 +206,9 @@ public class HttpUtils {
         map.put("androidid", "androidid");
         map.put("aip", "aip");
         map.put("skey", "skey");
+       String  activetimep=null ;
+        Long activetime = activetimep == null ? 0l : Long.valueOf(activetimep);
+
 
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(0l));
 //        System.out.println(JSONObject.toJSONString(map));
