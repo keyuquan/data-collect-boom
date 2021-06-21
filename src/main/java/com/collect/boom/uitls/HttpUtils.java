@@ -215,8 +215,10 @@ public class HttpUtils {
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(0l));
 //        System.out.println(JSONObject.toJSONString(map));
         //   System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
-        System.out.println(doGet("http://127.0.0.1:8099/tracking/active", map));
-        // System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
+        for (int i = 0; i < 10000000; i++) {
+            System.out.println(doGet("http://127.0.0.1:8099/tracking/active", map));
+        }
+         System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
 
     }
 
