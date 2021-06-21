@@ -104,9 +104,9 @@ public class TrackingIoController {
                 @Override
                 public void run() {
                     // 把数据发送到 kafka
-                    KafkaUtils.sendDataToKafka("boom_trackingio_active", data);
-                    // 数据发送到 fineboost
-                    HttpUtils.doGet("https://callback.fineboost.cn/tracking/act", map);
+//                    KafkaUtils.sendDataToKafka("boom_trackingio_active", data);
+//                    // 数据发送到 fineboost
+//                    HttpUtils.doGet("https://callback.fineboost.cn/tracking/act", map);
                 }
             });
         }
