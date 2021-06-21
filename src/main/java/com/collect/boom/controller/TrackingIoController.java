@@ -5,6 +5,7 @@ import com.collect.boom.uitls.DateUtils;
 import com.collect.boom.uitls.HttpUtils;
 import com.collect.boom.uitls.KafkaUtils;
 import org.apache.commons.lang.StringUtils;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -14,13 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import org.apache.log4j.Logger;
 /**
  * 热云数据同步
  */
 @RestController
 @RequestMapping("/tracking")
 public class TrackingIoController {
+
+    private static Logger logger = Logger.getLogger(TrackingIoController.class);
 
     private final static ExecutorService pool = Executors.newFixedThreadPool(5);
 
@@ -59,46 +62,49 @@ public class TrackingIoController {
         Long activetime = (StringUtils.isEmpty(activetimep) ? 0l : Long.valueOf(activetimep));
         Long clicktime = (StringUtils.isEmpty(clicktimep) ? 0l : Long.valueOf(clicktimep));
         String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("active_time", activeTime);
+        map.put("appkey", appkey);
+        map.put("deviceid", deviceid);
+        map.put("spreadurl", spreadurl);
+        map.put("spreadname", spreadname);
+        map.put("channel", channel);
+        map.put("accountid", accountid);
+        map.put("ry_adgroup_id", ry_adgroup_id);
+        map.put("ry_adgroup_name", ry_adgroup_name);
+        map.put("ry_adplan_id", ry_adplan_id);
+        map.put("ry_adcreative_id", ry_adcreative_id);
+        map.put("ry_adcreative_name", ry_adcreative_name);
+        map.put("activetime", activetime);
+        map.put("clicktime", clicktime);
+        map.put("uip", uip);
+        map.put("osversion", osversion);
+        map.put("ryos", ryos);
+        map.put("devicetype", devicetype);
+        map.put("idfa", idfa);
+        map.put("imei", imei);
+        map.put("oaid", oaid);
+        map.put("androidid", androidid);
+        map.put("aip", aip);
+        map.put("skey", skey);
+        try {
+            // 这些字段需要解码
+            map.put("ry_adgroup_name", URLDecoder.decode(ry_adgroup_name, "UTF-8"));
+            map.put("ry_adplan_name", URLDecoder.decode(ry_adplan_name, "UTF-8"));
+            map.put("ry_adcreative_name", URLDecoder.decode(ry_adcreative_name, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String data = JSONObject.toJSONString(map);
+        logger.info(data);
         if (StringUtils.isNotEmpty(appkey) && DateUtils.compareDate(activeTime, DateUtils.addDay(DateUtils.getSysDate(), 28)) <= 0) {
             // 超过28天以后的数据不要
-            Map<String, Object> map = new HashMap<>();
-            map.put("active_time", activeTime);
-            map.put("appkey", appkey);
-            map.put("deviceid", deviceid);
-            map.put("spreadurl", spreadurl);
-            map.put("spreadname", spreadname);
-            map.put("channel", channel);
-            map.put("accountid", accountid);
-            map.put("ry_adgroup_id", ry_adgroup_id);
-            map.put("ry_adgroup_name", ry_adgroup_name);
-            map.put("ry_adplan_id", ry_adplan_id);
-            map.put("ry_adcreative_id", ry_adcreative_id);
-            map.put("ry_adcreative_name", ry_adcreative_name);
-            map.put("activetime", activetime);
-            map.put("clicktime", clicktime);
-            map.put("uip", uip);
-            map.put("osversion", osversion);
-            map.put("ryos", ryos);
-            map.put("devicetype", devicetype);
-            map.put("idfa", idfa);
-            map.put("imei", imei);
-            map.put("oaid", oaid);
-            map.put("androidid", androidid);
-            map.put("aip", aip);
-            map.put("skey", skey);
-            try {
-                // 这些字段需要解码
-                map.put("ry_adgroup_name", URLDecoder.decode(ry_adgroup_name, "UTF-8"));
-                map.put("ry_adplan_name", URLDecoder.decode(ry_adplan_name, "UTF-8"));
-                map.put("ry_adcreative_name", URLDecoder.decode(ry_adcreative_name, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
             pool.execute(new Runnable() {
                 @Override
                 public void run() {
                     // 把数据发送到 kafka
-                    KafkaUtils.sendDataToKafka("boom_trackingio_active", JSONObject.toJSONString(map));
+                    KafkaUtils.sendDataToKafka("boom_trackingio_active", data);
                     // 数据发送到 fineboost
                     HttpUtils.doGet("https://callback.fineboost.cn/tracking/act", map);
                 }

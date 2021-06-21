@@ -194,8 +194,8 @@ public class HttpUtils {
         map.put("ry_adplan_name", "ry_adplan_name");
         map.put("ry_adcreative_id", " ry_adcreative_id");
         map.put("ry_adcreative_name", "ry_adcreative_name");
-        map.put("activetime", "1524016105");
-        map.put("clicktime", "1524016105");
+        map.put("activetime", "1524016105000");
+        map.put("clicktime", "1524016105000");
         map.put("uip", "uip");
         map.put("osversion", "osversion");
         map.put("ryos", "ryos");
@@ -207,13 +207,15 @@ public class HttpUtils {
         map.put("aip", "aip");
         map.put("skey", "skey");
         String activetimep = null;
-        Long activetime = activetimep == null ? 0l : Long.valueOf(activetimep);
 
+        Long activetime = (StringUtils.isEmpty(activetimep) ? 0l : Long.valueOf(activetimep));
+        String activeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(activetime);
+        map.put("active_time", activeTime);
         System.out.println("DE7BF6BA96B24E7ABF85602831529D3A7D264DE82259979BC123AB60A702B22C".length());
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(0l));
 //        System.out.println(JSONObject.toJSONString(map));
-//        System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
-//        System.out.println(doBodyGet("http://112.74.168.42:8099/tracking/active", map));
+        //   System.out.println(doGet("http://112.74.168.42:8099/tracking/active", map));
+        System.out.println(doGet("http://127.0.0.1:8099/tracking/active", map));
         // System.out.println(doPost("http://127.0.0.1:8080/tracking/active3", map));
 
     }
